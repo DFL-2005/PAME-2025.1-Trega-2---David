@@ -1,5 +1,6 @@
 import inquirer from 'inquirer';
 
+//teste
 class Reserva {
     constructor(cliente, quarto, checkin, checkout) {
         this.cliente = cliente;
