@@ -1,35 +1,43 @@
 import inquirer from 'inquirer';
+let contadorReserva = 0; // Adicione no escopo global
+
 class Reserva {
-    constructor(cliente, quarto, checkin, checkout) {
-        this.cliente = cliente;
-        this.quarto = quarto;
-        this.checkin = checkin;
-        this.checkout = checkout;
-        this.status = 'Ativa';
-}
-}
+  constructor(cliente, quarto, checkin, checkout) {
+    this.id = contadorReserva++;
+    this.cliente = cliente;
+    this.quarto = quarto;
+    this.checkin = checkin;
+    this.checkout = checkout;
+    this.status = 'Pendente'; 
+    this.avaliacao = null;
+  }
+ }
+
 
 class hotel { constructor(id, checkin, checkout){
-      this.id = id;
+      this.id = ++id.contador;
       this.checkin = checkin;
       this.checkout = checkout;
 }
 }
 class pessoa { constructor(CPF, nome, email, senha ) {
+      this.id = ++id.contador;
       this.CPF = CPF;
       this.nome = nome;  
       this.email = email;
       this.senha = senha;
 }
 }
-class funcionario {
-      constructor(usuário) {
+class funcionario {  
+    constructor(usuário) {
     this.usuário = usuário;
+    this.id = ++id.contador;
 }
 }
 class cliente {
     constructor(datadenascimento) {
       this.datadenascimento = datadenascimento;
+      
 }
 }
 class quarto {
@@ -87,7 +95,18 @@ class sistema {
         const reserva = this.reserva[idReserva];
         if (reserva) reserva.status = novoStatus;
 }
+}   
+     function cancelarReservaCliente(idReserva) {
+     const reserva = sistema.reserva.find(r => r.id === idReserva);
+     if (reserva && reserva.status === 'Pendente') {
+     reserva.status = 'Cancelada';
+     reserva.quarto.disponivel = true;
+     console.log("Reserva cancelada!");
+     } else {
+     console.log("Reserva não encontrada ou não pode ser cancelada.");
+  }
 }
+
 
 const sistema = new sistema();
 
@@ -139,7 +158,23 @@ if (acao === 'Ver quartos disponíveis') {
     console.log('Saindo...');
     process.exit();
  }
+      async function modificarDadosCliente(cliente) {
+      const novos = await inquirer.prompt([
+    { name: 'nome', message: 'Novo nome:' },
+    { name: 'email', message: 'Novo email:' },
+    { name: 'senha', message: 'Nova senha:' }]);
+    cliente.nome = novos.nome;
+     cliente.email = novos.email;
+    cliente.senha = novos.senha;
+    console.log("Dados atualizados!");
 }
+
+}   
+  function verMinhasReservas(clienteId) {
+  const reservas = sistema.reserva.filter(r => r.cliente === clienteId);
+  console.table(reservas);
+}
+
 
  async function menuFuncionario(funcionario) {
   const { acao } = await inquirer.prompt({
@@ -165,6 +200,20 @@ if (acao === 'Ver quartos disponíveis') {
         console.log('Saindo...');
         process.exit();
     }
+}   
+  function verDadosCliente(cliente) {
+  console.table({
+    ID: cliente.id,
+    Nome: cliente.nome,
+    Email: cliente.email,
+    CPF: cliente.CPF,
+    Nascimento: cliente.datadenascimento
+  });
 }
+
+function verDadosFuncionario(funcionario) {
+  console.table(funcionario.usuário);
+}
+
 
 login();
