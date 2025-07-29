@@ -1,8 +1,11 @@
 import inquirer from 'inquirer';
-let contadorReserva = 0; // Adicione no escopo global
+let contadorPessoa = 0;
+let contadorHotel = 0;
+let contadorFuncionario = 0;
+
 
 class Reserva {
-  constructor(cliente, quarto, checkin, checkout) {
+  constructor(cliente, quarto, checkin, checkout, id, status, avaliacao) {
     this.id = contadorReserva++;
     this.cliente = cliente;
     this.quarto = quarto;
@@ -15,13 +18,13 @@ class Reserva {
 
 
 class hotel { constructor(id, checkin, checkout){
-      this.id = ++id.contador;
+      this.id = ++id.contadorHotel;
       this.checkin = checkin;
       this.checkout = checkout;
 }
 }
 class pessoa { constructor(CPF, nome, email, senha ) {
-      this.id = ++id.contador;
+      this.id = ++id.contadorPessoa;
       this.CPF = CPF;
       this.nome = nome;  
       this.email = email;
@@ -35,10 +38,14 @@ class funcionario {
 }
 }
 class cliente {
-    constructor(datadenascimento) {
-      this.datadenascimento = datadenascimento;
-      
-}
+   const cliente = new cliente( dataNascimento, id, nome, email, CPF, senha, sistema);
+   this.id = ++id.contador;;
+   this.nome = nome;
+   this.email = email;
+   this.CPF =  CPFF;
+   this.senha = senha
+   sistema.adicionarcliente(cliente);
+
 }
 class quarto {
       constructor(cama, preço, disponivel, nome, descrição) {
@@ -158,7 +165,8 @@ if (acao === 'Ver quartos disponíveis') {
     console.log('Saindo...');
     process.exit();
  }
-      async function modificarDadosCliente(cliente) {
+}
+    async function modificarDadosCliente(cliente) {
       const novos = await inquirer.prompt([
     { name: 'nome', message: 'Novo nome:' },
     { name: 'email', message: 'Novo email:' },
@@ -169,7 +177,7 @@ if (acao === 'Ver quartos disponíveis') {
     console.log("Dados atualizados!");
 }
 
-}   
+  
   function verMinhasReservas(clienteId) {
   const reservas = sistema.reserva.filter(r => r.cliente === clienteId);
   console.table(reservas);
